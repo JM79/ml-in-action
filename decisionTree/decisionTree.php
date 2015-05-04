@@ -18,14 +18,28 @@ function calcShannonEnt($dataSet) {
   return $shannonEnt;
 }
 
+function splitDataSet($dataSet, $axis, $value) {
+  $retDataSet = array();
+  foreach ($dataSet as $featVec) {
+    if ($featVec[$axis] == $value) {
+      // Create a new array without this column
+      $reducedFeatVec = array_merge(array_splice($featVec, 0, $axis)
+                                   ,array_splice($featVec, $axis+1));
+      $retDataSet[] = $reducedFeatVec;
+    }
+  }
+  return $retDataSet;
+}
+
 $dataSet = array(array(1, 1, 'yes'),
-			array(1, 1, 'yes'),
-			array(1, 0, 'no'),
-			array(0, 1, 'no'),
-			array(0, 1, 'no'));
+			           array(1, 1, 'yes'),
+			           array(1, 0, 'no'),
+			           array(0, 1, 'no'),
+			           array(0, 1, 'no'));
+$labels = array("no surfacing", "flipper");
 
-$labels = array('no surfacing','flippers');
-
-var_dump(calcShannonEnt($dataSet, $labels));
+var_dump("Shannon Entropy:" . calcShannonEnt($dataSet, $labels));
+var_dump(splitDataSet($dataSet, 0, 1));
+var_dump(splitDataSet($dataSet, 0, 0));
 
 ?>
